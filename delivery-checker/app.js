@@ -24,7 +24,7 @@
 
   /* ---------- 2. Map ---------- */
   const store = L.latLng(C.store.lat, C.store.lng);
-  const map = L.map("map", { zoomControl: true, scrollWheelZoom: false, tap: true }).setView(store, 12);
+  const map = L.map("map", { zoomControl: true, scrollWheelZoom: false, tap: true });
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
@@ -38,7 +38,7 @@
   });
   const storeIcon = L.divIcon({ className: "", html: `<div class="store-pin">${esc(C.brand.logoText)}</div>`, iconSize: [40, 40], iconAnchor: [20, 20] });
   L.marker(store, { icon: storeIcon, title: C.store.name, keyboard: false }).bindPopup(`<b>${esc(C.store.name)}</b><br>${esc(C.store.address)}`).addTo(map);
-  map.fitBounds(store.toBounds(maxKm * 2000), { padding: [6, 6] });
+  map.fitBounds(store.toBounds(maxKm * 2000), { padding: [6, 6], animate: false });
   let meMarker = null, meLine = null;
 
   const legend = $("#legend");
@@ -192,7 +192,7 @@
     meLine = L.polyline([store, here], { color: r.inZone ? "#12824A" : "#B42318", weight: 3, dashArray: "4 8", opacity: .85 }).addTo(map);
     const b = L.latLngBounds([store, here]);
     if (r.km < maxKm) b.extend(store.toBounds(Math.max(r.km * 1.2, 2) * 2000));
-    map.fitBounds(b.pad(0.12), { maxZoom: 15 });
+    map.fitBounds(b.pad(0.12), { maxZoom: 15, animate: false });
 
     const km = r.km < 10 ? r.km.toFixed(1) : Math.round(r.km);
     const mapsPin = `https://www.google.com/maps/search/?api=1&query=${pt.lat.toFixed(6)},${pt.lng.toFixed(6)}`;
